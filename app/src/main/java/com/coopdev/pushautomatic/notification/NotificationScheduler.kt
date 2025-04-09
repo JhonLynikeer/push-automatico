@@ -7,17 +7,22 @@ import android.content.Intent
 import com.coopdev.pushautomatic.model.ScheduledNotification
 import com.coopdev.pushautomatic.receiver.AlarmReceiver
 import java.util.Calendar
+import android.util.Log
 
 class NotificationScheduler(private val context: Context) {
+    private val TAG = "NotificationScheduler"
     private val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
     fun scheduleNotifications(notifications: List<ScheduledNotification>) {
-        // Cancela todas as notificações existentes
+        Log.d(TAG, "Iniciando agendamento de ${notifications.size} notificações")
         cancelAllNotifications()
 
         notifications.forEach { notification ->
             if (notification.enabled) {
+                Log.d(TAG, "Agendando notificação: ID=${notification.id}, Hora=${notification.hour}:${notification.minute}")
                 scheduleNotification(notification)
+            } else {
+                Log.d(TAG, "Notificação desabilitada: ID=${notification.id}")
             }
         }
     }
@@ -42,12 +47,14 @@ class NotificationScheduler(private val context: Context) {
             set(Calendar.MINUTE, notification.minute)
             set(Calendar.SECOND, 0)
             
-            // Se o horário já passou hoje, agenda para amanhã
             if (timeInMillis <= System.currentTimeMillis()) {
                 add(Calendar.DAY_OF_YEAR, 1)
+                Log.d(TAG, "Horário já passou hoje, agendando para amanhã: ID=${notification.id}")
             }
         }
 
+        Log.d(TAG, "Agendando alarme para: ${calendar.time}, ID=${notification.id}")
+        
         // Agenda a notificação para repetir diariamente
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
@@ -58,6 +65,7 @@ class NotificationScheduler(private val context: Context) {
     }
 
     fun cancelAllNotifications() {
+        Log.d(TAG, "Cancelando todas as notificações existentes")
         // Cancela todas as notificações existentes
         for (id in 1..100) { // Assume um máximo de 100 notificações
             val intent = Intent(context, AlarmReceiver::class.java)
