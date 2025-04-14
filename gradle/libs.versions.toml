@@ -16,6 +16,7 @@ gson = "2.10.1"
 googleService = "4.4.2"
 firebase-bom = "32.7.2"
 google-services = "4.4.1"
+firebaseMessaging = "24.1.1"
 
 
 [libraries]
@@ -32,6 +33,7 @@ firebase-config = { group = "com.google.firebase", name = "firebase-config-ktx" 
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase-bom" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessaging" }
 
 
 [plugins]

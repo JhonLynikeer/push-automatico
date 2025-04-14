@@ -6,5 +6,6 @@ data class ScheduledNotification(
     val minute: Int,
     val title: String,
     val message: String,
-    val enabled: Boolean
+    val enabled: Boolean,
+    val deepLink: String? = null
 ) 
